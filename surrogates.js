@@ -11,8 +11,7 @@ function MovingObject() {
 
 function Ship () {
   MovingObject.call(this);
-};
-Ship.inherits(MovingObject);
+}.inherits(MovingObject);
 
 function Asteroid () {};
 Asteroid.inherits(MovingObject);
