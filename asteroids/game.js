@@ -9,7 +9,7 @@
 
   Game.DIM_X = 500;
   Game.DIM_Y = 500;
-  Game.FPS = 100;
+  Game.FPS = 60;
 
   Game.prototype.addAsteroids = function (num) {
     var asteroids = [];
@@ -73,6 +73,7 @@
 
   Game.prototype.start = function () {
     var game = this;
+    game.bindKeyHandlers();
     this.intervalID = window.setInterval( function () {
         game.step();
       }, Game.FPS);
@@ -92,6 +93,24 @@
     });
   };
 
+  Game.prototype.bindKeyHandlers = function () {
+    var ship = this.ship;
 
+    key('w', function(){
+      ship.power(0.3);
+    });
+
+    key('a', function(){
+      ship.shiftDir(-0.1);
+    });
+
+    key('s', function(){
+      ship.power(-0.3);
+    });
+
+    key('d', function(){
+      ship.shiftDir(0.1);
+    });
+  };
 
 })(this);

@@ -21,8 +21,8 @@
       this.pos[0],
       this.pos[1],
       this.radius,
-      1.9 * Math.PI,
-      1.6 * Math.PI,
+      0 * Math.PI,
+      2 * Math.PI,
       false
     );
 
