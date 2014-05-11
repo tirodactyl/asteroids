@@ -9,7 +9,7 @@
 
   var Ship = Asteroids.Ship = function (pos) {
     Asteroids.MovingObject.apply(this, [pos, [0, 0], Ship.RADIUS, Ship.COLOR]);
-    this.dir = 1.7;
+    this.dir = 17;
   };
 
   Ship.inherits(Asteroids.MovingObject);
@@ -19,8 +19,8 @@
 
   Ship.prototype.power = function (impulse) {
     var newVel = this.vel.slice(0);
-    newVel[0] += impulse * Math.cos(this.dir * Math.PI);
-    newVel[1] += impulse * Math.sin(this.dir * Math.PI);
+    newVel[0] += (impulse / 10) * Math.cos((this.dir / 10) * Math.PI);
+    newVel[1] += (impulse / 10) * Math.sin((this.dir / 10) * Math.PI);
 
     if (!this.speedLimit(newVel)) {
       this.vel = newVel;
@@ -32,7 +32,7 @@
   };
 
   Ship.prototype.shiftDir = function (mod) {
-    this.dir = (this.dir + mod) % 2;
+    this.dir = (this.dir + mod) % 20;
   };
 
   Ship.prototype.draw = function (ctx) {
@@ -43,8 +43,8 @@
       this.pos[0],
       this.pos[1],
       this.radius,
-      ((this.dir + 0.15) % 2) * Math.PI,
-      ((this.dir - 0.15) % 2) * Math.PI,
+      ((this.dir / 10) + 0.15) * Math.PI,
+      ((this.dir / 10) - 0.15) * Math.PI,
       false
     );
 

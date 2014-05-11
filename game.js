@@ -97,19 +97,19 @@
     var ship = this.ship;
 
     key('w', function(){
-      ship.power(0.3);
+      ship.power(2);
     });
 
     key('a', function(){
-      ship.shiftDir(-0.1);
+      ship.shiftDir(-1);
     });
 
     key('s', function(){
-      ship.power(-0.3);
+      ship.power(-2);
     });
 
     key('d', function(){
-      ship.shiftDir(0.1);
+      ship.shiftDir(1);
     });
   };
 
