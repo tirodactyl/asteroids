@@ -7,22 +7,25 @@
     <script src='asteroid.js'></script>
     <script src='game.js'></script>
     <script src='ship.js'></script>
-    <script src='keymaster.js'></script>
+    <script src='bullet.js'></script>
+    <script src='jquery.js'></script>
   </head>
 
   <body>
     <script>
-      var canvas = document.createElement('canvas');
-      canvas.width = Asteroids.Game.DIM_X;
-      canvas.height = Asteroids.Game.DIM_Y;
+      $(function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = Asteroids.Game.DIM_X;
+        canvas.height = Asteroids.Game.DIM_Y;
 
-      var ctx = canvas.getContext("2d");
+        var ctx = canvas.getContext("2d");
 
-      var body = document.getElementsByTagName("body")[0];
-      body.appendChild(canvas);
+        var body = document.getElementsByTagName("body")[0];
+        body.appendChild(canvas);
 
-      var game = new Asteroids.Game(ctx);
-      game.start();
+        var game = new Asteroids.Game(ctx);
+        game.start();
+      });
     </script>
   </body>
 </html>

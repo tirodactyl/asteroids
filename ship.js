@@ -51,6 +51,12 @@
     ctx.fill();
   };
 
-  Ship.prototype
+  Ship.prototype.fireBullet = function() {
+    var bulletPos = [];
+    bulletPos[0] = this.pos[0] + (10 * Math.cos((this.dir / 10) * Math.PI));
+    bulletPos[1] = this.pos[1] + (10 * Math.sin((this.dir / 10) * Math.PI));
+    
+    return new Asteroids.Bullet(bulletPos, this.dir);
+  };
 
 })(this);
