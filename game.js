@@ -40,11 +40,11 @@
 
   Game.prototype.move = function () {
     this.ship.move();
-    this.bullets.forEach(function (bullet) {
-      bullet.move();
-    });
     this.asteroids.forEach(function (asteroid) {
       asteroid.move();
+    });
+    this.bullets.forEach(function (bullet) {
+      bullet.move();
     });
   };
 
@@ -54,29 +54,45 @@
     this.draw();
     this.checkCollisions();
   };
+  
+  Game.prototype.outOfBounds = function (object) {
+    if (object.pos[0] < (0 - object.radius) ||
+        object.pos[0] > (Game.DIM_X + object.radius) ||
+        object.pos[1] < (0 - object.radius) ||
+        object.pos[1] > (Game.DIM_Y + object.radius)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   Game.prototype.checkAsteroids = function () {
     var game = this;
-    var outOfBounds = [];
+    var toRemove = [];
 
-    for (var i = 0; i < this.asteroids.length; i++) {
-      var asteroid = this.asteroids[i];
-      if (asteroid.pos[0] < (0 - asteroid.radius) ||
-          asteroid.pos[0] > (Game.DIM_X + asteroid.radius) ||
-          asteroid.pos[1] < (0 - asteroid.radius) ||
-          asteroid.pos[1] > (Game.DIM_Y + asteroid.radius)) {
-            outOfBounds.push(i);
-          }
-    }
-
-    outOfBounds = outOfBounds.sort(function(a, b) {
-      return b - a;
+    this.asteroids.forEach(function (asteroid) {
+      if (game.outOfBounds(asteroid)) {
+        toRemove.push(asteroid);
+      }
     });
 
-    for (var i = 0; i < outOfBounds.length; i++) {
-      this.asteroids.splice(outOfBounds[i], 1);
-    }
+    toRemove.forEach(function (asteroid) {
+      game.removeAsteroid(asteroid);
+    });
   };
+  
+  Game.prototype.removeAsteroid = function (asteroid) {
+    this.asteroids = _.reject(this.asteroids, function (item) {
+      return item.pos === asteroid.pos;
+    });
+  };
+  
+  Game.prototype.removeBullet = function (bullet) {
+    this.bullets = _.reject(this.bullets, function (item) {
+      return item.pos === bullet.pos;
+    });
+  };
+  
 
   Game.prototype.start = function () {
     var game = this;
@@ -93,9 +109,7 @@
   Game.prototype.checkCollisions = function () {
     var game = this;
     this.asteroids.forEach (function (asteroid) {
-      if (asteroid) {
-        
-      } else if (asteroid.isCollidedWith(game.ship)) {
+      if (asteroid.isCollidedWith(game.ship)) {
         game.stop();
         window.alert("Alderaan's revenge!");
       }
@@ -103,8 +117,8 @@
   };
   
   Game.prototype.fireBullet = function () {
-    this.bullets.push(this.ship.fireBullet());
-  }
+    this.bullets.push(this.ship.fireBullet(this));
+  };
 
   Game.prototype.bindKeyHandlers = function () {
     var ship = this.ship;

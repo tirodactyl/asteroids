@@ -8,12 +8,14 @@
     <script src='game.js'></script>
     <script src='ship.js'></script>
     <script src='bullet.js'></script>
+    
     <script src='jquery.js'></script>
+    <script src='underscore.js'></script>
   </head>
 
   <body>
     <script>
-      $(function () {
+      // $(function () {
         var canvas = document.createElement('canvas');
         canvas.width = Asteroids.Game.DIM_X;
         canvas.height = Asteroids.Game.DIM_Y;
@@ -25,7 +27,7 @@
 
         var game = new Asteroids.Game(ctx);
         game.start();
-      });
+      // });
     </script>
   </body>
 </html>
