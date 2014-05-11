@@ -22,13 +22,13 @@
     newVel[0] += (impulse / 10) * Math.cos((this.dir / 10) * Math.PI);
     newVel[1] += (impulse / 10) * Math.sin((this.dir / 10) * Math.PI);
 
-    if (!this.speedLimit(newVel)) {
+    if (!this.exceedSpeedLimit(newVel)) {
       this.vel = newVel;
     }
   };
 
-  Ship.prototype.speedLimit = function (newVel) {
-    return (Math.pow(newVel[0], 2) + Math.pow(newVel[1], 2) >= 18)
+  Ship.prototype.exceedSpeedLimit = function (newVel) {
+    return (Math.pow(newVel[0], 2) + Math.pow(newVel[1], 2) >= 109)
   };
 
   Ship.prototype.shiftDir = function (mod) {

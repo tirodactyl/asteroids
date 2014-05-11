@@ -97,7 +97,7 @@
     var ship = this.ship;
 
     key('w', function(){
-      ship.power(2);
+      ship.power(10);
     });
 
     key('a', function(){
@@ -105,7 +105,7 @@
     });
 
     key('s', function(){
-      ship.power(-2);
+      ship.power(-10);
     });
 
     key('d', function(){
