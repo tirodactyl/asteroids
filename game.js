@@ -3,7 +3,8 @@
 
   var Game = Asteroids.Game = function (ctx) {
     this.ctx = ctx
-    this.asteroids = this.addAsteroids(10);
+    this.asteroids = [];
+    this.addAsteroids(20);
     this.ship = new Asteroids.Ship([(Game.DIM_X / 2), (Game.DIM_Y / 2)]);
     this.bullets = [];
   };
@@ -16,10 +17,8 @@
     var asteroids = [];
     for (var i = 0; i < num; i++) {
       var asteroid = Asteroids.Asteroid.randomAsteroid(Game.DIM_X, Game.DIM_Y);
-      asteroids.push(asteroid);
+      this.asteroids.push(asteroid);
     }
-
-    return asteroids;
   };
 
   Game.prototype.draw = function () {
@@ -51,16 +50,22 @@
   Game.prototype.step = function () {
     this.performKeyActions();
     this.move();
-    this.checkAsteroids();
     this.draw();
     this.checkCollisions();
+    this.removeOutOfBounds();
+  };
+  
+  Game.prototype.removeOutOfBounds = function () {
+    this.checkAsteroids();
+    this.checkBullets();
+    this.checkShip();
   };
   
   Game.prototype.outOfBounds = function (object) {
-    if (object.pos[0] < (0 - object.radius) ||
-        object.pos[0] > (Game.DIM_X + object.radius) ||
-        object.pos[1] < (0 - object.radius) ||
-        object.pos[1] > (Game.DIM_Y + object.radius)) {
+    if (object.pos[0] < (0 - (object.radius || 0)) ||
+        object.pos[0] > (Game.DIM_X + (object.radius || 0)) ||
+        object.pos[1] < (0 - (object.radius || 0)) ||
+        object.pos[1] > (Game.DIM_Y + (object.radius || 0))) {
       return true;
     } else {
       return false;
@@ -80,6 +85,32 @@
     toRemove.forEach(function (asteroid) {
       game.removeAsteroid(asteroid);
     });
+    
+    this.addAsteroids(toRemove.length);
+  };
+  
+  Game.prototype.checkBullets = function () {
+    var game = this;
+    var toRemove = [];
+
+    this.bullets.forEach(function (bullet) {
+      if (game.outOfBounds(bullet)) {
+        toRemove.push(bullet);
+      }
+    });
+
+    toRemove.forEach(function (bullet) {
+      game.removeBullet(bullet);
+    });
+  };
+  
+  Game.prototype.checkShip = function () {
+    if (this.outOfBounds(this.ship)) {
+      newPos = this.ship.pos;
+      newPos[0] = (Game.DIM_X - newPos[0]);
+      newPos[1] = (Game.DIM_Y - newPos[1]);
+      this.ship.pos = newPos;
+    }
   };
   
   Game.prototype.removeAsteroid = function (asteroid) {
