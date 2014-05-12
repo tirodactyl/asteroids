@@ -49,6 +49,7 @@
   };
 
   Game.prototype.step = function () {
+    this.performKeyActions();
     this.move();
     this.checkAsteroids();
     this.draw();
@@ -96,7 +97,7 @@
 
   Game.prototype.start = function () {
     var game = this;
-    game.bindKeyHandlers();
+    game.bindKeyListeners();
     this.intervalID = window.setInterval( function () {
         game.step();
       }, Game.FPS);
@@ -119,46 +120,39 @@
   Game.prototype.fireBullet = function () {
     this.bullets.push(this.ship.fireBullet(this));
   };
+  
+  Game.prototype.performKeyActions = function () {
+    if (this.keyMap[87]) {
+      this.ship.power(10);
+    };
 
-  Game.prototype.bindKeyHandlers = function () {
-    var ship = this.ship;
+    if (this.keyMap[65]) {
+      this.ship.shiftDir(-1);
+    };
+
+    if (this.keyMap[83]) {
+      this.ship.power(-10);
+    };
+
+    if (this.keyMap[68]) {
+      this.ship.shiftDir(1);
+    };
+    
+    if (this.keyMap[32]) {
+      this.fireBullet();
+    };
+  };
+
+  Game.prototype.bindKeyListeners = function () {
+    this.keyMap = [];
     var game = this;
     
-    function forward () {
-      ship.power(10);
-    };
-
-    function turnCCW () {
-      ship.shiftDir(-1);
-    };
-
-    function reverse () {
-      ship.power(-10);
-    };
-
-    function turnCW () {
-      ship.shiftDir(1);
-    };
+    var keydown = keyup = function (e) {
+      game.keyMap[e.which] = (e.type === 'keydown');
+    }
     
-    $(document).keydown(function (event) {
-      switch(event.which) {
-        case 87:
-          forward();
-          break;
-        case 83:
-          reverse();
-          break;
-        case 65:
-          turnCCW();
-          break;
-        case 68:
-          turnCW();
-          break;
-        case 32:
-          game.fireBullet();
-          break;
-      }
-    });
+    $(document).keydown(keydown);
+    $(document).keyup(keyup);
   };
 
 })(this);
