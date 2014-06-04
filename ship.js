@@ -10,6 +10,7 @@
   var Ship = Asteroids.Ship = function (pos) {
     Asteroids.MovingObject.apply(this, [pos, [0, 0], Ship.RADIUS, Ship.COLOR]);
     this.dir = 17;
+    this.loaded = true;
   };
 
   Ship.inherits(Asteroids.MovingObject);
@@ -52,9 +53,13 @@
   };
 
   Ship.prototype.fireBullet = function(game) {
+    this.loaded = false
     var bulletPos = [];
     bulletPos[0] = this.pos[0] + (10 * Math.cos((this.dir / 10) * Math.PI));
     bulletPos[1] = this.pos[1] + (10 * Math.sin((this.dir / 10) * Math.PI));
+    
+    var ship = this;
+    setTimeout(function() { ship.loaded = true; }, 1000);
     
     return new Asteroids.Bullet(game, bulletPos, this.dir);
   };

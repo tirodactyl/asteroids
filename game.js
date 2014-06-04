@@ -149,7 +149,9 @@
   };
   
   Game.prototype.fireBullet = function () {
-    this.bullets.push(this.ship.fireBullet(this));
+    if (this.ship.loaded) {
+      this.bullets.push(this.ship.fireBullet(this));
+    }
   };
   
   Game.prototype.performKeyActions = function () {
