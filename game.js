@@ -3,15 +3,47 @@
 
   var Game = Asteroids.Game = function (ctx) {
     this.ctx = ctx
-    this.asteroids = [];
-    this.addAsteroids(20);
+    this.addOverlay('main');
+    this.drawOverlay();
+    var game = this;
+    $(document).keypress( function (event) {
+      if (event.which === 13) {
+        game.resetGame();
+      }
+    });
+    
     this.ship = new Asteroids.Ship([(Game.DIM_X / 2), (Game.DIM_Y / 2)]);
+    this.asteroids = [];
     this.bullets = [];
+    this.start();
   };
 
-  Game.DIM_X = 800;
-  Game.DIM_Y = 800;
+  Game.DIM_X = 600;
+  Game.DIM_Y = 600;
   Game.FPS = 50; //actually represents ms between redraws
+  
+  Game.prototype.addOverlay = function (type) {
+    this.overlay = new Asteroids.Overlay(type);
+    
+  };
+  
+  Game.prototype.removeOverlay = function () {
+    this.overlay = undefined;
+  };
+  
+  Game.prototype.drawOverlay = function () {
+    this.ctx.clearRect(0, 0, Game.DIM_X, Game.DIM_Y);
+    // gotta fix this
+    this.ctx.setFillColor('black');
+
+    this.ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
+    this.overlay.draw(ctx);
+  };
+  
+  Game.prototype.resetGame = function () {
+    this.removeOverlay();
+    this.addAsteroids(20);
+  };
 
   Game.prototype.addAsteroids = function (num) {
     var asteroids = [];
@@ -28,6 +60,8 @@
     this.ctx.setFillColor('black');
 
     this.ctx.fillRect(0, 0, Game.DIM_X, Game.DIM_Y);
+
+    if (this.overlay) { this.overlay.draw(ctx); }
     this.ship.draw(ctx);
     this.bullets.forEach(function (bullet){
       bullet.draw(ctx);
