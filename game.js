@@ -15,16 +15,16 @@
     this.ship = new Asteroids.Ship([(Game.DIM_X / 2), (Game.DIM_Y / 2)]);
     this.asteroids = [];
     this.bullets = [];
+    this.level = 1;
     this.start();
   };
 
-  Game.DIM_X = 600;
-  Game.DIM_Y = 600;
+  Game.DIM_X = 500;
+  Game.DIM_Y = 500;
   Game.FPS = 50; //actually represents ms between redraws
   
   Game.prototype.addOverlay = function (type) {
     this.overlay = new Asteroids.Overlay(type);
-    
   };
   
   Game.prototype.removeOverlay = function () {
@@ -40,9 +40,21 @@
     this.overlay.draw(ctx);
   };
   
-  Game.prototype.resetGame = function () {
+  Game.prototype.resetGame = function (n) {
+    this.started = true;
+    this.waiting = false;
+    n = n || ((this.level * 10) + 10);
     this.removeOverlay();
-    this.addAsteroids(20);
+    this.addAsteroids(n);
+  };
+  
+  Game.prototype.checkWin = function () {
+    if (this.asteroids.length === 0 && this.started && !this.waiting) {
+      this.waiting = true;
+      this.addOverlay('level', this.level);
+      this.level++;
+      setTimeout(this.resetGame.bind(this), 3000);
+    }
   };
 
   Game.prototype.addAsteroids = function (num) {
@@ -166,6 +178,7 @@
     this.intervalID = window.setInterval( function () {
         game.step();
       }, Game.FPS);
+    this.winIntervalId = window.setInterval(this.checkWin.bind(this), 500);
   };
 
   Game.prototype.stop = function () {

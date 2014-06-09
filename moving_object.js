@@ -14,6 +14,7 @@
   };
 
   MovingObject.prototype.draw = function (ctx) {
+    ctx.save();
     ctx.fillStyle = this.color;
     ctx.beginPath();
 
@@ -27,6 +28,7 @@
     );
 
     ctx.fill();
+    ctx.restore();
   };
 
   MovingObject.prototype.isCollidedWith = function (otherObject) {

@@ -8,11 +8,21 @@
   };
 
   var Asteroid = Asteroids.Asteroid = function (pos, vel) {
-    Asteroids.MovingObject.apply(this, [pos, vel, Asteroid.RADIUS, Asteroid.COLOR]);
+    Asteroids.MovingObject.apply(this, [pos, vel, Asteroid.COLOR, Asteroid.RADIUS]);
   };
 
   Asteroid.COLOR = "brown";
   Asteroid.RADIUS = 20;
+  
+  Asteroid.RandyRad = function () {
+    return 10 + (Math.random() * Asteroid.RADIUS);
+  };
+  Asteroid.RandyCol = function () {
+    var r = Math.floor(Math.random() * 255);
+    var g = Math.floor(Math.random() * 255);
+    var b = Math.floor(Math.random() * 255);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  };
 
   Asteroid.inherits(Asteroids.MovingObject);
 
@@ -35,6 +45,10 @@
     vel[0] = (Math.random() * 3 * velMult[0]);
     vel[1] = (Math.random() * 3 * velMult[1]);
 
-    return new Asteroid(pos, vel);
+    var asteroid =  new Asteroid(pos, vel);
+    asteroid.color = Asteroid.RandyCol();
+    asteroid.radius = Asteroid.RandyRad();
+    
+    return asteroid;
   };
 })(this);

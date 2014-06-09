@@ -37,6 +37,7 @@
   };
 
   Ship.prototype.draw = function (ctx) {
+    ctx.save();
     ctx.fillStyle = this.color;
     ctx.beginPath();
 
@@ -50,6 +51,7 @@
     );
 
     ctx.fill();
+    ctx.restore();
   };
 
   Ship.prototype.fireBullet = function(game) {
@@ -59,7 +61,7 @@
     bulletPos[1] = this.pos[1] + (10 * Math.sin((this.dir / 10) * Math.PI));
     
     var ship = this;
-    setTimeout(function() { ship.loaded = true; }, 1000);
+    setTimeout(function() { ship.loaded = true; }, 300);
     
     return new Asteroids.Bullet(game, bulletPos, this.dir);
   };
