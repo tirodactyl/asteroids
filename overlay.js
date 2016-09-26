@@ -1,14 +1,14 @@
 (function (root) {
   var Asteroids = root.Asteroids = (root.Asteroids || {});
-  
+
   var Overlay = Asteroids.Overlay = function (type) {
     this.type = this[type];
   };
-  
+
   Overlay.prototype.main = {
     settings: function (ctx) {
       ctx.textAlign = 'center'
-      ctx.setFillColor('yellow');
+      ctx.fillStyle = 'yellow';
     },
     lines: [
       {
@@ -25,11 +25,11 @@
       }
     ]
   };
-  
+
   Overlay.prototype.level = {
     settings: function (ctx) {
       ctx.textAlign = 'center'
-      ctx.setFillColor('yellow');
+      ctx.fillStyle = 'yellow';
     },
     lines: [
       {
@@ -46,16 +46,16 @@
       }
     ]
   };
-  
+
   Overlay.prototype.draw = function (ctx) {
     ctx.save();
     if (this.type.settings) { this.type.settings(ctx); }
     _.each(this.type.lines, function (line) {
-      
+
       if (line.font) { ctx.font = line.font; }
       ctx.fillText(line.text, line.x, line.y);
     });
     ctx.restore();
   };
-  
+
 })(this);
